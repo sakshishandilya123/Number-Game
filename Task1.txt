@@ -1,0 +1,61 @@
+import java.util.Scanner;
+import java.util.Random;
+
+public class NumberGuessingGame {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        Random random = new Random();
+        int totalScore = 0;
+        boolean playAgain = true;
+
+        System.out.println("Welcome to the Number Guessing Game!");
+        System.out.println("Rules:");
+        System.out.println("1. Guess the number within the range provided.");
+        System.out.println("2. You have a limited number of attempts.");
+        System.out.println("3. Score points by guessing correctly with fewer attempts.");
+
+        while (playAgain) {
+            // Game settings
+            int lowerBound = 1;
+            int upperBound = 100;
+            int attemptsAllowed = 7;
+            int secretNumber = random.nextInt(upperBound - lowerBound + 1) + lowerBound;
+            int attemptsTaken = 0;
+            boolean guessedCorrectly = false;
+
+            System.out.println("\nA new round has started!");
+            System.out.println("Guess the number between " + lowerBound + " and " + upperBound + ".");
+            System.out.println("You have " + attemptsAllowed + " attempts.");
+
+            while (attemptsTaken < attemptsAllowed) {
+                System.out.print("Enter your guess: ");
+                int userGuess = scanner.nextInt();
+                attemptsTaken++;
+
+                if (userGuess == secretNumber) {
+                    System.out.println("Congratulations! You guessed the correct number.");
+                    guessedCorrectly = true;
+                    totalScore += (attemptsAllowed - attemptsTaken + 1); // Higher score for fewer attempts
+                    break;
+                } else if (userGuess < secretNumber) {
+                    System.out.println("Too low! Try again.");
+                } else {
+                    System.out.println("Too high! Try again.");
+                }
+            }
+
+            if (!guessedCorrectly) {
+                System.out.println("Sorry, you've run out of attempts. The correct number was " + secretNumber + ".");
+            }
+
+            System.out.println("Your current score is: " + totalScore);
+            System.out.print("Do you want to play another round? (yes/no): ");
+            String response = scanner.next();
+            playAgain = response.equalsIgnoreCase("yes");
+        }
+
+        System.out.println("\nGame over! Your final score is: " + totalScore);
+        System.out.println("Thank you for playing!");
+        scanner.close();
+    }
+}
